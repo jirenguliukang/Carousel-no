@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+    .container {
+        position: relative;
+  margin: 100px auto 0 auto;
+        width:600px;
+        height:400px;
+        border:1px solid red;
+        overflow: hidden;
+    }
+
+    div.container div.wrap{
+    position: absolute;
+    width: 4200px;
+    height: 400px;
+
+}
+    .container img{
+
+     width: 600px;
+    height: 400px;
+    float: left;
+    }
+    .button{
+        border:1px solid red;
+        position: absolute;
+        bottom:30px;
+        right:225px;
+        height:40px;
+        text-align: center;
+        width: 150px;
+    
+    }
+    .button span{
+        margin-left: 5px;     
+        display:inline-block;
+        text-align: center;       
+        width:20px;
+        height:20px;
+        line-height:20px;
+        border-radius: 50%;
+        background:greenyellow;
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+    .button .on{
+        background: orangered
+    }
+    div.container div.button span.on{
+    opacity: 1;
+    }
+    .container .jt{
+        position: absolute;
+        top: 40%;
+        color:greenyellow;
+    padding: 0px 14px;
+    font-size: 55px;
+    text-align: center;
+    z-index: 2;
+    display: none;
+    }
+
+    div.container .jt_left{
+    left: 10px;
+}
+
+div.container .jt_right{
+    right: 10px;
+}
+
+div.container:hover .jt{
+    display: block;
+    opacity: 0.4;
+}
+
+div.container .jt:hover{
+    opacity: 1;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wrap" style="left:0">
+            <img src="./images/images/5.jpg" alt="5">
+            <img src="./images/images/1.jpg" alt="1">
+            <img src="./images/images/2.jpg" alt="2">
+            <img src="./images/images/3.jpg" alt="3">
+            <img src="./images/images/4.jpg" alt="4">
+            <img src="./images/images/5.jpg" alt="5">
+            <img src="./images/images/1.jpg" alt="1">
+        </div>
+        <div class="button">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+        </div>
+        <a href="javascript:void(0);" class="jt jt_left">&lt;</a>
+        <a href="javascript:void(0);" class="jt jt_right">&gt;</a>
+    </div>
+
+<script>
+    var wrap =document.getElementsByClassName("wrap")[0];
+    var container = document.getElementsByClassName("container")[0];
+    var arrowLeft = document.getElementsByClassName("jt_left")[0];
+    var arrowRight = document.getElementsByClassName("jt_right")[0];
+    var newLeft = -600;
+    var next;
+    //圆点功能
+    var buttons = document.querySelectorAll('.button>span');
+    var buttonser = document.getElementsByClassName("button")[0].getElementsByTagName('span');
+    var button = document.getElementsByClassName("button")[0];
+    console.log(buttons);
+    var index = 1;
+
+    function buttonshow() {
+        for (var i = 0; i < buttons.length; i++) {
+            if (buttons[i].className == 'on') {
+                buttons[i].className = '';
+            }
+        }
+        buttons[index - 1].className = 'on';
+    }
+
+    button.addEventListener("click", function (e) {
+        console.log(e.target.nodeName.toLowerCase());
+        if(e.target.nodeName.toLowerCase() === "span"){
+            var idx = [].indexOf.call(buttons, e.target);
+        // wrap.style.left = -600 * idx + 'px';
+
+        var offset = 600 * (index - idx);
+        animate(offset);
+        index = idx+1;
+        buttonshow();
+        }else{
+            return;
+        }
+
+    })
+
+
+
+
+
+    function animate(offset) {
+        newLeft = parseInt(wrap.style.left) + offset;
+        wrap.style.left = newLeft + "px";
+        if (newLeft < -3000) {
+            wrap.style.left = -600 + 'px';
+        }
+        if (newLeft > -600) {
+            wrap.style.left = -3000 + 'px';
+        }
+    }
+
+    arrowLeft.onclick = function () {
+        index -= 1;
+        if (index < 1) {
+            index = 5;
+        }
+        buttonshow();
+        animate(600);
+    }
+    arrowRight.onclick = function () {
+        index += 1;
+        if (index > 5) {
+            index = 1;
+        }
+        buttonshow();
+        animate(-600);
+    }
+
+    var timer;
+    function play() {
+        timer = setInterval(function () {
+            arrowRight.onclick()
+        }, 2000)
+    }
+    play();
+
+    function stop() {
+        clearInterval(timer);
+    }
+    container.onmouseover = stop;
+    container.onmouseout = play;
+
+
+
+
+</script>
+</body>
+</html>
